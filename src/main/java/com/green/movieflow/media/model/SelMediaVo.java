@@ -9,8 +9,8 @@ import java.util.List;
 
 @Data
 public class SelMediaVo {
-    @Schema(title = "미디어 번호")
-    private int imedia;
+    @Schema(title = "미디어 번호 리스트")
+    private List<Integer> imedia;
     @Schema(title = "일자")
     private int day;
     @JsonIgnore

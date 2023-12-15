@@ -18,7 +18,7 @@
         , is_saw = #{isSaw}
     </insert>
 
-    <insert id="postMediaPics">
+    <insert id="insMediaPics">
         INSERT INTO t_media_pics
         (imedia, pic)
         VALUES
@@ -53,22 +53,15 @@
     </update>
 
     <!--보류사유 - dto 받을 값 추가해야 한다고 생각-->
-    <select id="dayMedia">
-        SELECT A.imedia, A.date, A.star, B.pic
+    <select id="getDayMedia">
+        SELECT A.imedia, A.title, A.date, A.star, B.pic
         FROM t_media A
-        JOIN (
-            SELECT B.imedia, A.pic
-            FROM t_media_pics A
-            JOIN t_media B
-            ON A.imedia = B.imedia
-            WHERE B.iuser = #{iuser}
-            AND B.date = '#{date}'
-            GROUP BY A.imedia
-        ) B
+        JOIN t_media_pics B
         ON A.imedia = B.imedia
         WHERE A.iuser = #{iuser}
         AND A.date = #{date}
-        AND del = 0
+        AND A.del = 0
+        GROUP BY A.imedia
     </select>
 
     <!--보류사유 - dto 받을 값 추가해야 한다고 생각-->
@@ -82,10 +75,13 @@
     <!-- ///////////////////////////////////////////////////////// -->
 
     <select id="selMediaAll">
-        SELECT imedia, DATE
-        FROM t_media
-        WHERE iuser = #{iuser}
-        AND MONTH(date) = #{ym}
+        SELECT DAY(A.date) as day, B.pic
+        FROM t_media A
+        JOIN t_media_pics B
+        ON A.imedia = B.imedia
+        WHERE A.iuser = #{iuser}
+        AND YEAR(A.date) = #{year}
+        AND MONTH(A.date) = #{month}
         AND del = 0
     </select>
 
@@ -96,6 +92,14 @@
             #{imedia}
         </foreach>
         )
+    </select>
+
+    <select id="getMediaImedia">
+        SELECT imedia
+        FROM t_media
+        WHERE iuser = #{iuser}
+        AND day(DATE) = #{day}
+        AND del = 0
     </select>
 
     <select id="selMediaByDelMedia">
@@ -131,7 +135,7 @@
     </select>
 
     <select id="selDetailMedia">
-        SELECT imedia, title, comment, date, issaw, star, genrepk as genrePk
+        SELECT imedia, title, comment, date, is_saw as isSaw, star, genrepk as genrePk
         FROM t_media
         WHERE imedia = #{imedia}
         AND iuser = #{iuser}
