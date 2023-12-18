@@ -42,9 +42,7 @@ public class MediaService {
         return mapper.getDayMedia(dto);
     }
 
-    public ResVo patchIsSaw(MediaPatIsSawDto dto){
-        return new ResVo(mapper.patchIsSaw(dto));
-    }
+
     //-----------------------------------------------------
 
     // 메인페이지

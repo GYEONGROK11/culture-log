@@ -11,8 +11,6 @@ public interface MediaMapper {
     int insMedia(InsMediaDto dto);
     int insMediaPics(InsMediaDto dto);
 
-    int patchIsSaw(MediaPatIsSawDto dto);
-
     int putMedia(PutMedia dto);
 
     int delMediaPics(DelMediaDto dto);
@@ -20,9 +18,7 @@ public interface MediaMapper {
     List<MediaDaySelVo> getDayMedia(MediaDaySelDto dto);
 
     //-------------------------------------------------
-    List<Integer> getMediaImedia(MidiaAllSelDto dto);
     List<SelMediaVo> selMediaAll(MidiaAllSelDto dto);
-    List<SelMediaPicsProcVo> selMediapic(List<Integer> imediaList);
     Integer selMediaByDelMedia(DelMediaDto dto);
     int delMedia(DelMediaDto dto);
     List<SelMediaAllVo> selMedia(SelMediaAllDto dto);

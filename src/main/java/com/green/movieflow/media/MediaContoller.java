@@ -42,13 +42,6 @@ public class MediaContoller {
                         .build());
     }
 
-    // issaw, imedia, iuser
-    @PatchMapping
-    @Operation(summary = "시청여부 수정",description = "시청여부 수정")
-    public ResVo patchIsSaw(MediaPatIsSawDto dto){
-        return service.patchIsSaw(dto);
-    }
-
     //----------------------------------------------------------
 
     // 메인페이지

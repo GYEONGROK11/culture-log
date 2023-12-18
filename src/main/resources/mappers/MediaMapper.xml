@@ -80,13 +80,6 @@
         GROUP BY A.imedia
     </select>
 
-    <!--보류사유 - dto 받을 값 추가해야 한다고 생각-->
-    <update id="patchIsSaw">
-        UPDATE t_media
-        SET is_saw = #{isSaw}
-        WHERE imedia = #{imedia}
-        AND iuser = #{iuser}
-    </update>
 
     <!-- ///////////////////////////////////////////////////////// -->
 
