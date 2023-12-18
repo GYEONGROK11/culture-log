@@ -83,6 +83,7 @@
         AND YEAR(A.date) = #{year}
         AND MONTH(A.date) = #{month}
         AND del = 0
+        GROUP BY A.date
     </select>
 
     <select id="selMediapic">

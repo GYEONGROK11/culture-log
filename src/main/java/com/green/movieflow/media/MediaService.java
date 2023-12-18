@@ -20,6 +20,7 @@ public class MediaService {
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
         mapper.insMedia(dto);
+        mapper.insMediaPics(dto);
         return new ResVo(dto.getImedia());
     }
     public ResVo putMedia(PutMedia dto){
