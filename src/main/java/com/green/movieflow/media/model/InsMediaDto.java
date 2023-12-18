@@ -6,7 +6,8 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data@Schema(title = "미디어 등록 데이터")
+@Data
+@Schema(title = "미디어 등록 데이터")
 public class InsMediaDto {
     @JsonIgnore
     private int imedia;

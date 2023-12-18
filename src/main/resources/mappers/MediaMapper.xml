@@ -4,18 +4,30 @@
 <mapper namespace="com.green.movieflow.media.MediaMapper">
     <!--미디어 추가-->
     <insert id="insMedia" useGeneratedKeys="true" keyProperty="imedia">
-        INSERT INTO t_media
-        SET iuser = #{iuser}
+        insert into t_media
+        set iuser = #{iuser}
+        <if test="title != null and title != '' ">
         , title = #{title}
-        , genrepk = #{genrepk}
-        , date = #{date}
-        <if test="star > 0">
-            , star = #{star}
         </if>
-        <if test="comment != null">
-            , comment = #{comment}
+        <if test="date != null and date != '' ">
+            , date = #{date}
+        </if>
+        <if test="5 > genrepk > 0 ">
+            , genrepk = #{genrepk}
         </if>
         , is_saw = #{isSaw}
+        <if test="isSaw == 0">
+            , comment = null
+            , star = null
+        </if>
+        <if test="isSaw == 1">
+            <if test="comment != null">
+                , comment = #{comment}
+            </if>
+            <if test="star > 0 ">
+                , star = #{star}
+            </if>
+        </if>
     </insert>
 
     <insert id="insMediaPics">
@@ -30,31 +42,35 @@
     <update id="putMedia">
         UPDATE t_media
         SET
-        <if test="genrepk > 0">
-            genrepk = #{genrepk}
+        <if test="title != null and title != '' ">
+            title = #{title}
         </if>
-        <if test="title !=null and title !=''">
-            ,title = #{title}
+        <if test="date != null and date != '' ">
+            , date = #{date}
         </if>
-        <if test="date !=null and date !=''">
-            ,date = #{date}
+        <if test="5 > genrepk > 0 ">
+            , genrepk = #{genrepk}
         </if>
-        <if test="comment !=null and comment !=''">
-            ,comment = #{comment}
+        <if test="isSaw != null and isSaw != '' ">
+            , is_saw = #{isSaw}
         </if>
-        <if test="star > 0">
-            ,star = #{star}
+        <if test="isSaw == 0">
+            , comment = null
+            , star = null
         </if>
-        <if test="isSaw == 0 or isSaw == 1">
-            ,is_saw = #{isSaw}
+        <if test="isSaw == 1">
+            , comment = #{comment}
+            , star = #{star}
         </if>
-        WHERE imedia = #{imedia}
-        AND iuser = #{iuser}
+        where iuser = #{iuser}
+        and imedia = #{imedia}
+        and del = 0
     </update>
 
     <!--보류사유 - dto 받을 값 추가해야 한다고 생각-->
     <select id="getDayMedia">
-        SELECT A.imedia, A.title, A.date, A.star, B.pic
+        SELECT A.imedia, A.title, A.date
+        , A.star, B.pic
         FROM t_media A
         JOIN t_media_pics B
         ON A.imedia = B.imedia
@@ -75,15 +91,15 @@
     <!-- ///////////////////////////////////////////////////////// -->
 
     <select id="selMediaAll">
-        SELECT DAY(A.date) as day, B.pic
-        FROM t_media A
-        JOIN t_media_pics B
-        ON A.imedia = B.imedia
-        WHERE A.iuser = #{iuser}
-        AND YEAR(A.date) = #{year}
-        AND MONTH(A.date) = #{month}
-        AND del = 0
-        GROUP BY A.date
+        select m.imedia, p.pic, m.date,
+        COUNT(distinct m.imedia) as mediaCnt
+        from t_media m
+        join t_media_pics p
+        ON m.imedia = p.imedia
+        WHERE date_format(date, '%Y-%m') = #{ym}
+        and m.iuser = #{iuser}
+        and m.del = 0
+        GROUP BY m.date
     </select>
 
     <select id="selMediapic">
@@ -125,7 +141,7 @@
 
     <select id="selMedia">
         SELECT A.imedia, A.title, B.pic
-        , A.star, A.comment
+        , A.star, A.date
         FROM t_media A
         JOIN t_media_pics B
         ON A.imedia = B.imedia
@@ -136,7 +152,8 @@
     </select>
 
     <select id="selDetailMedia">
-        SELECT imedia, title, comment, date, is_saw as isSaw, star, genrepk as genrePk
+        SELECT imedia, title, comment, date
+        , is_saw as isSaw, star, genrepk as genrePk
         FROM t_media
         WHERE imedia = #{imedia}
         AND iuser = #{iuser}

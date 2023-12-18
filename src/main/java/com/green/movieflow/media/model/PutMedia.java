@@ -13,7 +13,7 @@ public class PutMedia {
     @Schema(title = "유저번호")
     private int iuser;
     @Schema(title = "장르번호")
-    private int genrepk;
+    private int genrePk;
     @Schema(title = "제목")
     private String title;
     @Schema(title = "시청 날짜")

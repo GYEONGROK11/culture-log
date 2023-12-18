@@ -20,7 +20,7 @@ public class SelMediaDetailVo {
     @Schema(title = "시청여부")
     private int isSaw;
     @Schema(title = "장르 번호")
-    private int genrepk;
+    private int genrePk;
     @Schema(title = "별점")
     private int star;
     @Schema(title = "사진리스트")

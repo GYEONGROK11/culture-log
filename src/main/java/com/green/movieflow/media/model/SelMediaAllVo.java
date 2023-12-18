@@ -3,6 +3,7 @@ package com.green.movieflow.media.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @Getter
@@ -11,8 +12,6 @@ public class SelMediaAllVo {
     private String title;
     private String date;
     private String pic;
-    private MediaSawInfoVo sawInfo;
-    public void MediaSawInfoVo(MediaSawInfoVo vo){
-        this.sawInfo = vo;
-    }
+    private int star;
+
 }

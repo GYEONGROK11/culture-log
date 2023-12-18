@@ -33,8 +33,8 @@ public class MediaContoller {
     }
 
     // iuser, date
-    @GetMapping("day")
-    @Operation(summary = "일자별 미디어 리스트",description = "일자별 미디어 리스트")
+    @GetMapping("/day")
+    @Operation(summary = "날짜별 미디어 리스트",description = "날짜별 미디어 리스트")
     public List<MediaDaySelVo> getDayMedia(int iuser, String date){
         return service.getDayMedia(MediaDaySelDto.builder()
                         .iuser(iuser)
@@ -61,7 +61,10 @@ public class MediaContoller {
     // 마이페이지
     @GetMapping
     @Operation(summary = "마이페이지",description = "마이페이지")
-    public List<SelMediaAllVo> getMedia(SelMediaAllDto dto){
+    public List<SelMediaAllVo> getMedia(@RequestParam("is_saw")int isSaw, int iuser){
+        SelMediaAllDto dto = new SelMediaAllDto();
+        dto.setIsSaw(isSaw);
+        dto.setIuser(iuser);
         return service.getMedia(dto);
     }
 

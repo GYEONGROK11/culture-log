@@ -9,12 +9,12 @@ import java.util.List;
 
 @Data
 public class SelMediaVo {
-    @Schema(title = "미디어 번호 리스트")
-    private List<Integer> imedia;
+    @Schema(title = "미디어 번호 ")
+    private int imedia;
     @Schema(title = "일자")
-    private int day;
-    @JsonIgnore
-    private List<String> pics = new ArrayList<>();
+    private int date;
     @Schema(title = "미디어 사진")
     private String pic;
+    @Schema(title = "미디어 개수")
+    private int mediaCnt;
 }

@@ -25,7 +25,8 @@ public class MediaService {
     }
     public ResVo putMedia(PutMedia dto){
         mapper.putMedia(dto);
-        if (dto.getPics().size() >0){
+        if (dto.getPics().size() >= Const.PIC_SIZE_MIN
+                && dto.getPics().size() <= Const.PIC_SIZE_MAX){
             DelMediaDto dto1 = new DelMediaDto();
             dto1.setImedia(dto.getImedia());
             mapper.delMediaPics(dto1);
@@ -48,35 +49,13 @@ public class MediaService {
 
     // 메인페이지
     public List<SelMediaVo> getMediaAll(MidiaAllSelDto dto){
-        List<SelMediaVo> vo = mapper.selMediaAll(dto);
-        for (int i = 0; i < vo.size(); i++) {
-            dto.setDay(vo.get(i).getDay());
-            List<Integer> media = mapper.getMediaImedia(dto);
-            vo.get(i).setImedia(media);
-        }
-        return vo;
+        return mapper.selMediaAll(dto);
     }
 
     // 마이페이지
     public List<SelMediaAllVo> getMedia(SelMediaAllDto dto){
-        List<SelMediaAllProcVo> list = mapper.selMedia(dto);
-        // sawInfo 안에 isSaw가 1일 때 사용되는 값을 저장하도록 했습니다.
-        List<SelMediaAllVo> allVo = new ArrayList<>();
-        for ( SelMediaAllProcVo pVo: list ) {
-            SelMediaAllVo vo = SelMediaAllVo.builder()
-                    .imedia(pVo.getImedia())
-                    .title(pVo.getTitle())
-                    .date(pVo.getDate())
-                    .pic(pVo.getPic())
-                    .build();
-            MediaSawInfoVo sawInfoVo = MediaSawInfoVo.builder()
-                    .star(pVo.getStar())
-                    .comment(pVo.getComment())
-                    .build();
-            vo.MediaSawInfoVo(sawInfoVo);
-            allVo.add(vo);
-        }
-        return allVo;
+        List<SelMediaAllVo> list = mapper.selMedia(dto);
+        return list;
     }
 
     // 상세페이지
