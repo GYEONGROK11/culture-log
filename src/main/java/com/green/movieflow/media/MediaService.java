@@ -19,21 +19,32 @@ public class MediaService {
     private final MediaMapper mapper;
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
-        mapper.insMedia(dto);
-        mapper.insMediaPics(dto);
+        int affectedRows = mapper.insMedia(dto);
+        if(affectedRows == 0){
+            return new ResVo(Const.FAIL);
+        }
+        if(dto.getPics().size() <= Const.PIC_SIZE_MIN
+                && dto.getPics().size() >= Const.PIC_SIZE_MAX){
+            return new ResVo(Const.FAIL);
+        }
+        int affectedPicRows = mapper.insMediaPics(dto);
         return new ResVo(dto.getImedia());
     }
     public ResVo putMedia(PutMedia dto){
-        mapper.putMedia(dto);
+        int affectedRows = mapper.putMedia(dto);
+        if(affectedRows == 0){
+            return new ResVo(Const.FAIL);
+        }
+
         if (dto.getPics().size() >= Const.PIC_SIZE_MIN
                 && dto.getPics().size() <= Const.PIC_SIZE_MAX){
             DelMediaDto dto1 = new DelMediaDto();
             dto1.setImedia(dto.getImedia());
-            mapper.delMediaPics(dto1);
+            int affectedDelRows = mapper.delMediaPics(dto1);
             InsMediaDto dto2 = new InsMediaDto();
             dto2.setImedia(dto.getImedia());
             dto2.setPics(dto.getPics());
-            mapper.insMediaPics(dto2);
+            int affectedPicRows = mapper.insMediaPics(dto2);
         }
         return new ResVo(Const.SUCCESS);
     }
@@ -59,6 +70,13 @@ public class MediaService {
     // 상세페이지
     public SelMediaDetailVo getDetailMedia(SelMediaDto dto){
         SelMediaDetailVo vo = mapper.selDetailMedia(dto);
+        if(vo == null){
+            return null;
+        }
+        if(vo.getPics().size() <= Const.PIC_SIZE_MIN
+                && vo.getPics().size() >= Const.PIC_SIZE_MAX){
+            return null;
+        }
         List<String> pics = mapper.selMediaPics(dto);
         vo.setPics(pics);
         return vo;
@@ -72,7 +90,7 @@ public class MediaService {
             return new ResVo(Const.FAIL);
             // 없으면 리턴
         }
-        mapper.delMedia(dto);
+        int affectedDelRows = mapper.delMedia(dto);
         return new ResVo(Const.SUCCESS);
     }
 }
