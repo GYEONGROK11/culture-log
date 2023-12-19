@@ -133,8 +133,8 @@
     </update>
 
     <select id="selMedia">
-        SELECT A.imedia, A.title, B.pic
-        , A.star, A.date
+        SELECT A.imedia, A.title, A.date, B.pic
+        , A.star
         FROM t_media A
         JOIN t_media_pics B
         ON A.imedia = B.imedia
