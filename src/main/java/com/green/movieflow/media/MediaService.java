@@ -73,8 +73,8 @@ public class MediaService {
         if(vo == null){
             return null;
         }
-        if(vo.getPics().size() <= Const.PIC_SIZE_MIN
-                && vo.getPics().size() >= Const.PIC_SIZE_MAX){
+        if(vo.getPics().size() < Const.PIC_SIZE_MIN
+                && vo.getPics().size() > Const.PIC_SIZE_MAX){
             return null;
         }
         List<String> pics = mapper.selMediaPics(dto);
