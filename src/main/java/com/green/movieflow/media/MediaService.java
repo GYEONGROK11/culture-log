@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j
@@ -19,38 +21,90 @@ public class MediaService {
     private final MediaMapper mapper;
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
-        int affectedRows = mapper.insMedia(dto);
-        if(affectedRows == 0){
+        if(dto.getTitle()==null
+                || dto.getDate()==null
+                || dto.getIuser() < 0
+                || (dto.getIsSaw() < Const.ISSEE
+                && dto.getIsSaw() > Const.ISSAW)){
             return new ResVo(Const.FAIL);
         }
-        if(dto.getPics().size() <= Const.PIC_SIZE_MIN
-                && dto.getPics().size() >= Const.PIC_SIZE_MAX){
+        boolean date_check = Pattern.matches("^\\d\\-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])$/",dto.getDate());
+
+        if(date_check == false
+                || (dto.getPics().size() < Const.PIC_SIZE_MIN
+                && dto.getPics().size() > Const.PIC_SIZE_MAX)
+                || (dto.getGenrePk() < Const.GENRE_MIN
+                && dto.getGenrePk() > Const.GENRE_MAX)){
             return new ResVo(Const.FAIL);
         }
-        int affectedPicRows = mapper.insMediaPics(dto);
-        return new ResVo(dto.getImedia());
-    }
-    public ResVo putMedia(PutMedia dto){
-        int affectedRows = mapper.putMedia(dto);
-        if(affectedRows == 0){
+        try {
+            int affectedRows = mapper.insMedia(dto);
+            log.info("affectedRows : {}",affectedRows);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResVo(Const.FAIL);
+        }
+        try {
+            int affectedPicRows = mapper.insMediaPics(dto);
+            log.info("affectedRows : {}", affectedPicRows);
+        } catch (Exception e){
+            e.printStackTrace();
             return new ResVo(Const.FAIL);
         }
 
-        if (dto.getPics().size() >= Const.PIC_SIZE_MIN
-                && dto.getPics().size() <= Const.PIC_SIZE_MAX){
-            DelMediaDto dto1 = new DelMediaDto();
-            dto1.setImedia(dto.getImedia());
-            int affectedDelRows = mapper.delMediaPics(dto1);
-            InsMediaDto dto2 = new InsMediaDto();
-            dto2.setImedia(dto.getImedia());
-            dto2.setPics(dto.getPics());
-            int affectedPicRows = mapper.insMediaPics(dto2);
+        return new ResVo(dto.getImedia());
+    }
+    public ResVo putMedia(PutMedia dto){
+        if(dto.getTitle()==null
+                || dto.getDate()==null
+                || dto.getImedia() < 0
+                || dto.getIuser() < 0
+                || (dto.getIsSaw() < Const.ISSEE
+                && dto.getIsSaw() > Const.ISSAW)){
+            return new ResVo(Const.FAIL);
         }
+        boolean date_check = Pattern.matches("^\\d\\-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/",dto.getDate());
+
+        if(date_check == false
+                || (dto.getGenrePk() < Const.GENRE_MIN
+                && dto.getGenrePk() > Const.GENRE_MAX)){
+            return new ResVo(Const.FAIL);
+        }
+        int affectedRows = mapper.putMedia(dto);
+        if(affectedRows ==0){
+            return new ResVo(Const.FAIL);
+        }
+
+
+            if (dto.getPics().size() >= Const.PIC_SIZE_MIN
+                    && dto.getPics().size() <= Const.PIC_SIZE_MAX){
+                DelMediaDto dto1 = new DelMediaDto();
+                dto1.setImedia(dto.getImedia());
+                int affectedDelRows = mapper.delMediaPics(dto1);
+                InsMediaDto dto2 = new InsMediaDto();
+                dto2.setImedia(dto.getImedia());
+                dto2.setPics(dto.getPics());
+                int affectedPicRows = mapper.insMediaPics(dto2);
+
+                if(affectedDelRows == 0){
+                    return new ResVo(Const.FAIL);
+                }
+            }
+
         return new ResVo(Const.SUCCESS);
     }
 
     public List<MediaDaySelVo> getDayMedia(MediaDaySelDto dto){
-        return mapper.getDayMedia(dto);
+
+        List<MediaDaySelVo> list;
+        try {
+            list = mapper.getDayMedia(dto);
+            log.info("list : {}", list);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return list;
     }
 
 
@@ -58,27 +112,54 @@ public class MediaService {
 
     // 메인페이지
     public List<SelMediaVo> getMediaAll(MidiaAllSelDto dto){
-        return mapper.selMediaAll(dto);
+        List<SelMediaVo> list;
+
+        try {
+            list = mapper.selMediaAll(dto);
+            log.info("list : {}", list);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return list;
     }
 
     // 마이페이지
     public List<SelMediaAllVo> getMedia(SelMediaAllDto dto){
-        List<SelMediaAllVo> list = mapper.selMedia(dto);
+        List<SelMediaAllVo> list;
+
+        try {
+            list = mapper.selMedia(dto);
+            log.info("list : {}", list);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
         return list;
     }
 
     // 상세페이지
     public SelMediaDetailVo getDetailMedia(SelMediaDto dto){
-        SelMediaDetailVo vo = mapper.selDetailMedia(dto);
-        if(vo == null){
+        SelMediaDetailVo vo;
+
+        try {
+            vo =  mapper.selDetailMedia(dto);
+            log.info("list : {}", vo);
+            if(vo == null){
+                return null;
+            }
+            List<String> pics = mapper.selMediaPics(dto);
+            vo.setPics(pics);
+
+            if(vo.getPics().size() < Const.PIC_SIZE_MIN
+                    && vo.getPics().size() > Const.PIC_SIZE_MAX){
+                return null;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
             return null;
         }
-        if(vo.getPics().size() < Const.PIC_SIZE_MIN
-                && vo.getPics().size() > Const.PIC_SIZE_MAX){
-            return null;
-        }
-        List<String> pics = mapper.selMediaPics(dto);
-        vo.setPics(pics);
         return vo;
     }
 
@@ -90,7 +171,9 @@ public class MediaService {
             return new ResVo(Const.FAIL);
             // 없으면 리턴
         }
+
         int affectedDelRows = mapper.delMedia(dto);
+
         return new ResVo(Const.SUCCESS);
     }
 }

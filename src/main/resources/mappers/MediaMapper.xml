@@ -13,7 +13,7 @@
             , date = #{date}
         </if>
         <if test="5 > genrepk > 0 ">
-            , genrepk = #{genrepk}
+            , genrepk = #{genrePk}
         </if>
         , is_saw = #{isSaw}
         <if test="isSaw == 0">
@@ -49,7 +49,7 @@
             , date = #{date}
         </if>
         <if test="5 > genrepk > 0 ">
-            , genrepk = #{genrepk}
+            , genrepk = #{genrePk}
         </if>
         <if test="isSaw != null and isSaw != '' ">
             , is_saw = #{isSaw}

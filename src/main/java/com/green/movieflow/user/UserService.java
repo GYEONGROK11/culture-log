@@ -15,6 +15,14 @@ public class UserService {
     public ResVo postSignup(UserSignupDto dto){
         String hashPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashPw);
+
+        if(dto.getUid().isBlank()){
+            return null;
+        }
+        if(dto.getUpw().isBlank()){
+            return null;
+        }
+        dto.getUpw().isBlank();
         int affectedRow = mapper.insSignup(dto);
         if(affectedRow == 0){
             return new ResVo(Const.FAIL);

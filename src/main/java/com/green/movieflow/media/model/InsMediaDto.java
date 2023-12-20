@@ -2,6 +2,7 @@ package com.green.movieflow.media.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
@@ -14,10 +15,11 @@ public class InsMediaDto {
     @Schema(title = "유저번호")
     private int iuser;
     @Schema(title = "장르번호")
-    private int genrepk;
+    private int genrePk;
     @Schema(title = "제목")
     private String title;
     @Schema(title = "시청 날짜")
+    @Pattern(regexp = "^\\d\\-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])$/", message = "형식이 맞지 않습니다")
     private String date;
     @Schema(title = "감상평")
     private String comment;

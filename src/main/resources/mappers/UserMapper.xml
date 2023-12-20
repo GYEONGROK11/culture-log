@@ -6,8 +6,13 @@
     <!--회원가입-->
     <insert id="insSignup" useGeneratedKeys="true" keyProperty="iuser">
         INSERT INTO t_user
-        SET uid = #{uid}
-        , upw = #{upw}
+        SET
+        <if test="uid!='' and uid!=null">
+            uid = #{uid}
+        </if>
+        <if test="upw!='' and upw!=null">
+            , upw = #{upw}
+        </if>
         , nm = #{nm}
     </insert>
 
