@@ -5,6 +5,7 @@ import com.green.movieflow.common.ResVo;
 import com.green.movieflow.media.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -21,20 +22,20 @@ public class MediaService {
     private final MediaMapper mapper;
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
-        if(dto.getTitle()==null
+        if(StringUtils.isBlank(dto.getTitle())
                 || dto.getDate()==null
                 || dto.getIuser() < 0
                 || (dto.getIsSaw() < Const.ISSEE
                 && dto.getIsSaw() > Const.ISSAW)){
             return new ResVo(Const.FAIL);
         }
-        boolean date_check = Pattern.matches("^\\d\\-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])$/",dto.getDate());
+        boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
 
-        if(date_check == false
-                || (dto.getPics().size() < Const.PIC_SIZE_MIN
+        if((dto.getPics().size() < Const.PIC_SIZE_MIN
                 && dto.getPics().size() > Const.PIC_SIZE_MAX)
                 || (dto.getGenrePk() < Const.GENRE_MIN
-                && dto.getGenrePk() > Const.GENRE_MAX)){
+                && dto.getGenrePk() > Const.GENRE_MAX)
+                ||date_check == false){
             return new ResVo(Const.FAIL);
         }
         try {
@@ -63,7 +64,7 @@ public class MediaService {
                 && dto.getIsSaw() > Const.ISSAW)){
             return new ResVo(Const.FAIL);
         }
-        boolean date_check = Pattern.matches("^\\d\\-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/",dto.getDate());
+        boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
 
         if(date_check == false
                 || (dto.getGenrePk() < Const.GENRE_MIN
