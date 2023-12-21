@@ -18,7 +18,7 @@
 
     <!--로그인-->
     <select id="selUserPw">
-        SELECT upw, iuser
+        SELECT iuser, upw
         FROM t_user
         WHERE uid = #{uid}
     </select>
