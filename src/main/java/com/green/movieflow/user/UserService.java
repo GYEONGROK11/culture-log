@@ -31,13 +31,13 @@ public class UserService {
     }
 
     public ResVo postSignin(UserSigninDto dto){
-        String upw = mapper.selUserPw(dto);
+        UserSigninDto upw = mapper.selUserPw(dto);
         if(upw == null){
             return new ResVo(3); // 아이디 비번 불일치
         }
-        Boolean comparedPw = BCrypt.checkpw(dto.getUpw(), upw);
+        Boolean comparedPw = BCrypt.checkpw(dto.getUpw(), upw.getUpw());
         if(comparedPw){
-            return new ResVo(1); // 아이디 비번 일치
+            return new ResVo(dto.getIuser()); // 아이디 비번 일치
         }
         return new ResVo(2); // 비번 불일치
     }

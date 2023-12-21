@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Schema(title = "미디어 수정 데이터")
+@Schema(title = "미디어 수정 데이터 DTO")
 public class PutMedia {
     @Schema(title = "미디어번호")
     private int imedia;

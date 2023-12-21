@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Schema(title = "상세페이지 출력 데이터")
+@Schema(title = "상세페이지 출력 데이터 VO")
 
 public class SelMediaDetailVo {
     @Schema(title = "미디어 번호")

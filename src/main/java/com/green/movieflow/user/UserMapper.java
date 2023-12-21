@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     int insSignup(UserSignupDto dto);
-    String selUserPw(UserSigninDto dto);
+    UserSigninDto selUserPw(UserSigninDto dto);
 }

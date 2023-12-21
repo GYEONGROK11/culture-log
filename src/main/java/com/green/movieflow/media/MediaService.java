@@ -5,8 +5,9 @@ import com.green.movieflow.common.ResVo;
 import com.green.movieflow.media.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.regex.Pattern;
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ public class MediaService {
     private final MediaMapper mapper;
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
-        if(StringUtils.isBlank(dto.getTitle())
-                || dto.getDate()==null
+        if(!StringUtils.hasLength(dto.getTitle())
+                || !StringUtils.hasLength(dto.getDate())
                 || dto.getIuser() < 0
                 || (dto.getIsSaw() < Const.ISSEE
                 && dto.getIsSaw() > Const.ISSAW)){
@@ -56,8 +57,8 @@ public class MediaService {
         return new ResVo(dto.getImedia());
     }
     public ResVo putMedia(PutMedia dto){
-        if(dto.getTitle()==null
-                || dto.getDate()==null
+        if(StringUtils.hasLength(dto.getTitle())
+                || StringUtils.hasLength(dto.getDate())
                 || dto.getImedia() < 0
                 || dto.getIuser() < 0
                 || (dto.getIsSaw() < Const.ISSEE

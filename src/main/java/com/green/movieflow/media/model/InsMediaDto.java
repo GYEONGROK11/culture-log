@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Schema(title = "미디어 등록 데이터")
+@Schema(title = "미디어 등록 데이터 DTO")
 public class InsMediaDto {
     @JsonIgnore
     private int imedia;
@@ -19,7 +19,6 @@ public class InsMediaDto {
     @Schema(title = "제목")
     private String title;
     @Schema(title = "시청 날짜")
-    @Pattern(regexp = "^\\d\\-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])$/", message = "형식이 맞지 않습니다")
     private String date;
     @Schema(title = "감상평")
     private String comment;

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Builder
 @Getter
-@Schema(title = "시청여부에 따른 미디어 출력")
+@Schema(title = "시청여부에 따른 미디어 출력 VO")
 public class SelMediaAllVo {
     @Schema(title = "미디어 번호")
     private int imedia;
