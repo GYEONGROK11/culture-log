@@ -18,7 +18,7 @@
         , is_saw = #{isSaw}
         <if test="isSaw == 0">
             , comment = null
-            , star = null
+            , star = 0
         </if>
         <if test="isSaw == 1">
             <if test="comment != null">
@@ -56,7 +56,7 @@
         </if>
         <if test="isSaw == 0">
             , comment = null
-            , star = null
+            , star = 0
         </if>
         <if test="isSaw == 1">
             , comment = #{comment}
