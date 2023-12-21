@@ -16,9 +16,10 @@ public class SelMediaAllVo {
     private String title;
     @Schema(title = "날짜")
     private String date;
-    @Schema(title = "사진")
-    private String pic;
     @Schema(title = "별점")
     private int star;
+    @Schema(title = "사진")
+    private String pic;
+
 
 }

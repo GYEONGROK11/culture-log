@@ -67,7 +67,6 @@
         and del = 0
     </update>
 
-    <!--보류사유 - dto 받을 값 추가해야 한다고 생각-->
     <select id="getDayMedia">
         SELECT A.imedia, A.title, A.date
         , A.star, B.pic
@@ -133,8 +132,8 @@
     </update>
 
     <select id="selMedia">
-        SELECT A.imedia, A.title, A.date, B.pic
-        , A.star
+        SELECT A.imedia, A.title, A.date, A.star
+        ,B.pic
         FROM t_media A
         JOIN t_media_pics B
         ON A.imedia = B.imedia
