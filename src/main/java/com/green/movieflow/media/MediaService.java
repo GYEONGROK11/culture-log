@@ -130,10 +130,13 @@ public class MediaService {
     public List<SelMediaAllVo> getMedia(SelMediaAllDto dto){
         List<SelMediaAllVo> list;
 
-
+        try {
             list = mapper.selMedia(dto);
             log.info("list : {}", list);
-
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 
         return list;
     }
