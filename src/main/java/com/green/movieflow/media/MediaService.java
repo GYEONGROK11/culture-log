@@ -57,8 +57,8 @@ public class MediaService {
         return new ResVo(dto.getImedia());
     }
     public ResVo putMedia(PutMedia dto){
-        if(StringUtils.hasLength(dto.getTitle())
-                || StringUtils.hasLength(dto.getDate())
+        if(!StringUtils.hasLength(dto.getTitle())
+                || !StringUtils.hasLength(dto.getDate())
                 || dto.getImedia() < 0
                 || dto.getIuser() < 0
                 || (dto.getIsSaw() < Const.ISSEE
