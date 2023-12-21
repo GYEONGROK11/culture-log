@@ -37,7 +37,7 @@ public class UserService {
         }
         Boolean comparedPw = BCrypt.checkpw(dto.getUpw(), upw.getUpw());
         if(comparedPw){
-            return new ResVo(dto.getIuser()); // 아이디 비번 일치
+            return new ResVo(upw.getIuser()); // 아이디 비번 일치
         }
         return new ResVo(-1); // 비번 불일치
     }
