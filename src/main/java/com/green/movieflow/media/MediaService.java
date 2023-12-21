@@ -57,7 +57,7 @@ public class MediaService {
         return new ResVo(dto.getImedia());
     }
     public ResVo putMedia(PutMedia dto){
-        if(!StringUtils.hasLength(dto.getTitle())
+        if(!StringUtils.hasLength(dto.getTitle())//공백 체크, null체크 를 합친 메소드 : StringUtils.hasLength(dto.getTitle()값이 잘 들어올 경우 true
                 || !StringUtils.hasLength(dto.getDate())
                 || dto.getImedia() < 0
                 || dto.getIuser() < 0
