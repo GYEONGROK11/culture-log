@@ -23,20 +23,25 @@ public class MediaService {
     private final MediaMapper mapper;
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
+
+        boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
+        for (int i = 0; i < dto.getPics().size(); i++) {
+            boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
+            if(pic_check ==false){
+                return new ResVo(Const.FAIL);
+            }
+        }
+
         if(!StringUtils.hasLength(dto.getTitle())
-                || !StringUtils.hasLength(dto.getDate())
                 || dto.getIuser() < 0
                 || (dto.getIsSaw() < Const.ISSEE
-                && dto.getIsSaw() > Const.ISSAW)){
-            return new ResVo(Const.FAIL);
-        }
-        boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
-
-        if((dto.getPics().size() < Const.PIC_SIZE_MIN
+                && dto.getIsSaw() > Const.ISSAW)
+                || (dto.getPics().size() < Const.PIC_SIZE_MIN
                 && dto.getPics().size() > Const.PIC_SIZE_MAX)
                 || (dto.getGenrePk() < Const.GENRE_MIN
                 && dto.getGenrePk() > Const.GENRE_MAX)
-                ||date_check == false){
+                || !StringUtils.hasLength(dto.getDate())
+                ||date_check == false) {
             return new ResVo(Const.FAIL);
         }
         try {
@@ -57,19 +62,23 @@ public class MediaService {
         return new ResVo(dto.getImedia());
     }
     public ResVo putMedia(PutMedia dto){
+
+        boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
+        for (int i = 0; i < dto.getPics().size(); i++) {
+            boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
+            if(pic_check ==false){
+                return new ResVo(Const.FAIL);
+            }
+        }
         if(!StringUtils.hasLength(dto.getTitle())//공백 체크, null체크 를 합친 메소드 : StringUtils.hasLength(dto.getTitle()값이 잘 들어올 경우 true
-                || !StringUtils.hasLength(dto.getDate())
                 || dto.getImedia() < 0
                 || dto.getIuser() < 0
                 || (dto.getIsSaw() < Const.ISSEE
-                && dto.getIsSaw() > Const.ISSAW)){
-            return new ResVo(Const.FAIL);
-        }
-        boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
-
-        if(date_check == false
+                && dto.getIsSaw() > Const.ISSAW)
                 || (dto.getGenrePk() < Const.GENRE_MIN
-                && dto.getGenrePk() > Const.GENRE_MAX)){
+                && dto.getGenrePk() > Const.GENRE_MAX)
+                || !StringUtils.hasLength(dto.getDate())
+                ||date_check == false) {
             return new ResVo(Const.FAIL);
         }
         int affectedRows = mapper.putMedia(dto);
