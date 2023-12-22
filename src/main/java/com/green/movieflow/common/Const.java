@@ -6,6 +6,7 @@ public class Const {
 
     public static final int PIC_SIZE_MIN = 1;
     public static final int PIC_SIZE_MAX = 4;
+    public static final int PIC_PATTERN_MISS = 0;
 
     public static final int GENRE_MIN = 1;
     public static final int GENRE_MAX = 4;

@@ -28,7 +28,7 @@ public class MediaService {
         for (int i = 0; i < dto.getPics().size(); i++) {
             boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
             if(pic_check ==false){
-                return new ResVo(Const.FAIL);
+                return new ResVo(Const.PIC_PATTERN_MISS);
             }
         }
 
@@ -66,8 +66,8 @@ public class MediaService {
         boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
         for (int i = 0; i < dto.getPics().size(); i++) {
             boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
-            if(pic_check ==false){
-                return new ResVo(Const.FAIL);
+            if(pic_check == false){
+                return new ResVo(Const.PIC_PATTERN_MISS);
             }
         }
         if(!StringUtils.hasLength(dto.getTitle())//공백 체크, null체크 를 합친 메소드 : StringUtils.hasLength(dto.getTitle()값이 잘 들어올 경우 true
