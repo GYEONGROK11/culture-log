@@ -32,7 +32,7 @@ public class MediaContoller {
         return service.putMedia(dto);
     }
 
-    // iuser, date
+    // 날짜별 미디어 리스트
     @GetMapping("/day")
     @Operation(summary = "날짜별 미디어 리스트",description = "날짜별 미디어 리스트 관련 처리")
     public List<MediaDaySelVo> getDayMedia(int iuser, String date){
