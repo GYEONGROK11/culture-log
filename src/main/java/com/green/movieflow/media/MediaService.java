@@ -21,13 +21,14 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class MediaService {
     private final MediaMapper mapper;
+
     // 미디어 추가
     public ResVo postMedia(InsMediaDto dto){
 
         boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
         for (int i = 0; i < dto.getPics().size(); i++) {
             boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
-            if(pic_check ==false){
+            if(pic_check == false){
                 return new ResVo(Const.PIC_PATTERN_MISS);
             }
         }
@@ -117,9 +118,6 @@ public class MediaService {
         }
         return list;
     }
-
-
-    //-----------------------------------------------------
 
     // 메인페이지
     public List<SelMediaVo> getMediaAll(MidiaAllSelDto dto){
