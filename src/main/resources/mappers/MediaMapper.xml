@@ -84,7 +84,7 @@
 
     <select id="selMediaAll">
         select m.imedia, p.pic, m.date,
-        COUNT(distinct m.imedia) as mediaCnt
+        COUNT(m.imedia) as mediaCnt
         from t_media m
         join t_media_pics p
         ON m.imedia = p.imedia
