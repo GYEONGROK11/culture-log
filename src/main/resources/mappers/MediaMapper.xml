@@ -83,11 +83,20 @@
     <!-- ///////////////////////////////////////////////////////// -->
 
     <select id="selMediaAll">
-        select m.imedia, p.pic, m.date,
-        COUNT(m.imedia) as mediaCnt
+        SELECT m.imedia, p.pic, m.date,
+        c.mediaCnt
         from t_media m
         join t_media_pics p
         ON m.imedia = p.imedia
+            LEFT JOIN (
+            SELECT  imedia, COUNT(DATE) AS mediaCnt
+            from t_media
+            WHERE date_format(date, '%Y-%m') = #{ym}
+            and iuser = #{iuser}
+            and del = 0
+            GROUP BY date
+            ) c
+        ON m.imedia = c.imedia
         WHERE date_format(date, '%Y-%m') = #{ym}
         and m.iuser = #{iuser}
         and m.del = 0
