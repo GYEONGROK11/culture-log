@@ -28,7 +28,8 @@ public class MediaService {
         boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
         for (int i = 0; i < dto.getPics().size(); i++) {
             boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
-            if(pic_check == false){
+            boolean pic_check1 = Pattern.matches("http://+.*",dto.getPics().get(i));
+            if(!(pic_check == true || pic_check1 == true) ){
                 return new ResVo(Const.PIC_PATTERN_MISS);
             }
         }
@@ -67,7 +68,8 @@ public class MediaService {
         boolean date_check = Pattern.matches("([12]\\d{3})-(0[1-9]|1[012])-(0[0-9]|[12][0-9]|3[01])",dto.getDate());
         for (int i = 0; i < dto.getPics().size(); i++) {
             boolean pic_check = Pattern.matches("https://+.*",dto.getPics().get(i));
-            if(pic_check == false){
+            boolean pic_check1 = Pattern.matches("http://+.*",dto.getPics().get(i));
+            if(!(pic_check == true || pic_check1 == true)){
                 return new ResVo(Const.PIC_PATTERN_MISS);
             }
         }
